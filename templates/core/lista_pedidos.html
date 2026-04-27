@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Pedidos{% endblock %}
+
+{% block navbar %} {% include "includes/navbar_home.html" %}  {% endblock %}
+
+{% block content %}
+
+<h1>Lista de Pedidos</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+{% if pedidos %}
+    <ul>
+
+        {% for pedido in pedidos %}
+            <li>
+                Pedido # {{pedido.id}} - Estado: {{pedido.estado}} - Total: ${{pedido.total}} - Fecha: {{pedido.fecha_creacion}}
+                <a href="{% url 'detalle_pedido' pedido.id %}"> Ver Detalles </a>
+            </li>
+        {% endfor %}
+
+    </ul>
+{% else %}
+    <p> No tienes pedidos registrados. </p>
+{% endif %}
+
+<p><a href="{% url 'crear_pedido' %}">Crear nuevo pedido</a></p>
+
+{% endblock %}

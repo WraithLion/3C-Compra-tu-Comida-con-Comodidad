@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Crear pedido{% endblock %}
+
+{% block navbar %} {% include "includes/navbar_home.html" %}  {% endblock %}
+
+{% block content %}
+
+<h1>Crear pedido</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h2>Selecciona tus platillos</h2>
+
+        {% if platillos %}
+            <table border="1" cellpadding="8">
+                <thead>
+                    <tr>
+                        <th>Platillo</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for platillo in platillos %}
+                        <tr>
+                            <td>{{ platillo.nombre }}</td>
+                            <td>{{ platillo.descripcion }}</td>
+                            <td>${{ platillo.precio }}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    name="cantidad_{{ platillo.id }}"
+                                    min="0"
+                                    value="0"
+                                >
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay platillos disponibles.</p>
+        {% endif %}
+
+        <h2>Método de pago</h2>
+
+        <select name="metodo_pago" >
+            <option value="">Selecciona una opción</option>
+            <option value="efectivo">Efectivo</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="paypal">PayPal</option>
+            <option value="mercadopago">Mercado Pago</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Crear pedido</button>
+    </form>
+
+    <p><a href="{% url 'lista_pedidos' %}">Volver a mis pedidos</a></p>
+
+{% endblock %}

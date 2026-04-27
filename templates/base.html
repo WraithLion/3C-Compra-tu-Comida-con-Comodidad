@@ -1,0 +1,15 @@
+{% load core_extras %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Mi sitio Django{% endblock %}</title>
+</head>
+<body>
+    {% block navbar %}{% endblock %}
+
+    <hr>
+
+    {% block content %}{% endblock %}
+</body>
+</html>

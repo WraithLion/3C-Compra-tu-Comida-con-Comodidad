@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de Pedidos{% endblock %}
+
+{% block navbar %} {% include "includes/navbar_home.html" %}  {% endblock %}
+
+{% block content %}
+
+<h1>Detalle del pedido #{{ pedido.id }}</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <p><strong>Usuario:</strong> {{ pedido.usuario.username }}</p>
+    <p><strong>Estado:</strong> {{ pedido.get_estado_display }}</p>
+    <p><strong>Total:</strong> ${{ pedido.total }}</p>
+    <p><strong>Fecha:</strong> {{ pedido.fecha_creacion }}</p>
+
+    <h2>Platillos del pedido</h2>
+
+    {% if pedido.detalles.all %}
+        <ul>
+            {% for detalle in pedido.detalles.all %}
+                <li>
+                    {{ detalle.platillo.nombre }} |
+                    Cantidad: {{ detalle.cantidad }} |
+                    Precio unitario: ${{ detalle.precio_unitario }} |
+                    Subtotal: ${{ detalle.subtotal }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Este pedido no tiene detalles.</p>
+    {% endif %}
+
+    {% if pedido.pago %}
+        <h2>Pago</h2>
+        <p><strong>Método:</strong> {{ pedido.pago.get_metodo_pago_display }}</p>
+        <p><strong>Estado del pago:</strong> {{ pedido.pago.get_estado_pago_display }}</p>
+        <p><strong>Monto:</strong> ${{ pedido.pago.monto }}</p>
+    {% endif %}
+    
+    {% if pedido.estado == 'pendiente' %}
+    <p><a href="{% url 'editar_pedido' pedido.id %}">Editar pedido</a></p>
+    <p><a href="{% url 'cancelar_pedido' pedido.id %}">Cancelar pedido</a></p>
+    {% endif %}
+
+    <p><a href="{% url 'lista_pedidos' %}">Volver a mis pedidos</a></p>
+
+
+{% endblock %}

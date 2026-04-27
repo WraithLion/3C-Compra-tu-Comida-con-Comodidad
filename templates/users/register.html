@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Registro{% endblock %}
+
+{% block navbar %} {% include "includes/navbar_home.html" %}  {% endblock %}
+
+
+{% block content %}
+<h1>Registro de usuario</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear cuenta</button>
+</form>
+{% endblock %}
