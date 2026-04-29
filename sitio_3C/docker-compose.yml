@@ -1,0 +1,24 @@
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/sitio_3C
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_NAME=mi_db
+      - POSTGRES_USER=mi_usuario
+      - POSTGRES_PASSWORD=mi_contraseña
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: mi_db
+      POSTGRES_USER: mi_usuario
+      POSTGRES_PASSWORD: mi_contraseña
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:   
