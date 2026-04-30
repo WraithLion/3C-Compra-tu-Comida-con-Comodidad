@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
 
+    path('',views.sitioPrincipal3C,name='sitioPrincipal_3C'),
     # Cuenta
     path('cuenta/', views.cuenta_list, name='cuenta_list'),
     path('cuenta/crear/', views.cuenta_create, name='cuenta_create'),

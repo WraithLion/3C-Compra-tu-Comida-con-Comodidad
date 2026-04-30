@@ -6,6 +6,12 @@ from .forms import (
 )
 
 # --- VISTAS PARA CUENTA ---
+def sitioPrincipal3C(request):
+    
+    return render(request, 'sitio_principal_3C.html', )
+
+
+# --- VISTAS PARA CUENTA ---
 def cuenta_list(request):
     items = Cuenta.objects.all()
     return render(request, 'cuenta/cuenta_list.html', {'items': items})
