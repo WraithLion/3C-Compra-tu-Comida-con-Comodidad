@@ -1,0 +1,61 @@
+html,body{
+    box-sizing:border-box
+}
+
+.container{
+display:grid;
+gap:1em;
+}
+
+.panel{
+box-sizing:border-box;
+padding:2px 2px;
+border-radius:20px;
+}
+
+.card{
+box-sizing:border-box;
+padding:2px 2px;
+border-radius:20px;
+}
+
+.metrics{
+display:grid;
+}
+.hidden{
+    visibility: hidden;
+}
+/* Estilizando el formulario */
+
+/* Formato a los campos de entrada */
+input{
+    padding:4px 4px;
+    box-sizing:border-box;
+    border-radius:10px;
+    color:#180501;
+}
+
+/* Estilo cuando un campo es seleccionado */
+
+input:focus-visible{
+padding:3px 3px;
+box-sizing:border-box;
+border-radius:10px;
+color:#180501;
+}
+
+/* Formato para los botones */
+
+button{
+border-radius:20px;
+color:white;
+background-color:#F57327;
+}
+
+/* Estilo al pasar encima del boton */
+
+button:hover{
+background-color:#27A9F5;
+}
+
+
