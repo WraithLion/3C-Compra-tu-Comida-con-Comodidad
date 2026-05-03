@@ -1,56 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clima</title>
-<link rel="stylesheet" href="static/css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bienvenido a 3C</title>
+  <link rel="stylesheet" href="static/css/styles.css" />
+
 </head>
-
 <body>
-<!--  -->
-<div class="header">
-    <p style="font-size:56px">DeClima</p>
-    <p style="font-size:28px">El tiempo está contigo</p>
+  <header class="main-header">
+        <div class="brand">3C</div>
+        <nav class="nav-menu">
+            <a href="#promociones" class="nav-link">Crear cuenta</a>
+            <a href="#restaurante" class="nav-link active">Iniciar sesión</a>
+        </nav>
+    </header>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm" method="post">
+      {% csrf_token %}
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+      <label for="contrasena">Contraseña</label>
+      <input type="password" id="contrasena" name="contrasena" required>
+      <div class="modal-buttons">
+        <button type="button" class="btn-cancelar">Cancelar</button>
+        <button type="submit" class="btn-ingresar">Ingresar</button>
+      </div>
+    </form>
+  </div>
 </div>
 
-<div class="main">
-    <div class="section" id="PanelBusqueda"></div>
-    <div class="section" id="Resultados"></div>
-</div>
+<!-- Mensaje de error -->
+{% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
 
-<p id="status"></p>     <!--Mensaje para estado/errores-->
+  <main class="welcome-section">
+    <h1>Bienvenido a 3C</h1>
+    <p>Conectamos clientes, restaurantes y repartidores.</p>
 
-<div class="section">
-<div class="form">
-<label></label>
-<input id="cityInput" name="city"></input>
-<input id="latInput" name="latitude"></input>
-<input id="lonInput" name="longitued"></input>
-<button type="submit" id="btnSearchByName">Buscar por nombre</button>
-<button type="submit" id="btnSearchByLatLon">Buscar por coordenadas</button>
-</div>
-<div class="article" id="card" hidden="hidden">
-<p id="place"></p>
-<p id="icon"></p>
-<p id="desc"></p>
-<p id="temp"></p>
-<p id="feels"></p>
-<p id="humidity"></p>
-<p id="wind"></p>
-</div>
-</div>
-
-
-
-<br></br>
-
-<!-- Pie de página -->
-<div class="footer" style="font-family:'Cinema St Regular';font-weight:normal;font-size:20px">
-    <br>Aqui va un texto</br>
-</div>
-
-
-</body>
+    <div class="role-cards">
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Cliente</h2>
+        <p>Descubre y pide a tu restaurante favorito.</p>
+      </div>
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Restaurante</h2>
+        <p>Amplía tu alcance y recibe pedidos en línea.</p>
+      </div>
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Repartidor</h2>
+        <p>Amplía tu alcance y recibe pedidos en línea.</p>
+      </div>
+      <div class>
+      <script src="static/js/crearCuenta.js"></script>
+      </body>
 
 </html>
