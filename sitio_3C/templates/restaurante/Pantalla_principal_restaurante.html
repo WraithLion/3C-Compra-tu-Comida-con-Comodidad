@@ -29,6 +29,10 @@
         <h3>Enchiladas</h3>
         <p>Deliciosas enchiladas rojas con pollo.</p>
         <div class="price">$120</div>
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
       </div>
 
       <div class="card">
@@ -36,6 +40,10 @@
         <h3>Tacos al Pastor</h3>
         <p>Tacos de piña y carne asada.</p>
         <div class="price">$80</div>
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
       </div>
 
       <div class="card">
@@ -43,6 +51,10 @@
         <h3>Pozole</h3>
         <p>Tradicional pozole rojo.</p>
         <div class="price">$110</div>
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
       </div>
     </div>
   </main>
@@ -55,7 +67,7 @@
       <img src="placeholder-icon.png" alt="Subir imagen">
       <p>Subir imagen</p>
     </div>
-    <div id="addItemForm" class="form-fields">
+    <form id="addItemForm" class="form-fields">
       <div class="form-group">
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" required>
@@ -65,12 +77,14 @@
         <input type="number" id="precio" name="precio" required step="0.01">
       </div>
       <div class="modal-buttons">
-        <button type="button" class="btn-cancelar">Cancelar</button>
         <button type="submit" class="btn-guardar">Agregar</button>
+        <button type="button" class="btn-cancelar">Cancelar</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
+
+
   <script src="/static/js/restaurante/agregarElemento.js"></script>
 </body>
 </html>

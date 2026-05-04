@@ -2,83 +2,114 @@ document.addEventListener('DOMContentLoaded', function () {
   // Elementos del DOM
   const openModal = document.getElementById('openModal');
   const modal = document.getElementById('addItemModal');
-  const closeBtn = document.querySelector('.close');
-  const cancelBtn = document.querySelector('.btn-cancelar');
-  const addBtn = document.querySelector('.btn-guardar');
+  const closeBtn = modal.querySelector('.close');
+  const cancelBtn = modal.querySelector('.btn-cancelar');
+  const saveBtn = modal.querySelector('.btn-guardar');
   const form = document.getElementById('addItemForm');
   const menuGrid = document.querySelector('.menu-grid');
   const imageUpload = document.getElementById('imageUpload');
 
-  // Abrir modal
+  let editingCard = null;
+
+  // --- Función: Abrir modal para agregar ---
   openModal.addEventListener('click', () => {
+    editingCard = null;
+    form.reset();
     modal.style.display = 'flex';
   });
 
-  // Cerrar modal con la 'X'
-  closeBtn.addEventListener('click', () => {
+  // --- Función: Cerrar modal ---
+  function closeModal() {
     modal.style.display = 'none';
     form.reset();
-  });
-
-  // Cerrar modal
-  closeBtn.onclick = function() {
-    modal.style.display = "none";
-    form.reset(); // <- Esto ya está limpiando el formulario
   }
 
-  // Cerrar modal con botón Cancelar
-  cancelBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
-    form.reset();
+  closeBtn.addEventListener('click', closeModal);
+  cancelBtn.addEventListener('click', closeModal);
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
   });
 
-  // Cerrar al hacer clic fuera del contenido
-  window.onclick = function(event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
-      form.reset(); // <- Esto ya está limpiando el formulario
+    // --- Función: Agregar nuevo platillo ---
+    function agregarPlatillo() {
+      const nombre = document.getElementById('nombre').value;
+      const precio = document.getElementById('precio').value;
+
+      if (!nombre || !precio) {
+        alert('Completa todos los campos.');
+        return;
+      }
+
+      const newCard = document.createElement('div');
+      newCard.classList.add('card');
+      newCard.innerHTML = `
+      <img src="https://via.placeholder.com/150" alt="${nombre}">
+      <h3>${nombre}</h3>
+      <p>Descripción del platillo</p>
+      <div class="price">$${parseFloat(precio).toFixed(2)}</div>
+      <div class="context-menu">
+      <div class="menu-option modificar-btn">Modificar</div>
+      <div class="menu-option borrar-btn">Eliminar</div>
+      </div>
+      `;
+      menuGrid.appendChild(newCard);
+
+      closeModal();
+      alert('¡Platillo agregado con éxito!');
     }
-  }
 
+    // --- Función: Modificar platillo ---
+    function modificarPlatillo() {
+      const nombre = document.getElementById('nombre').value;
+      const precio = document.getElementById('precio').value;
 
-  // Funcionalidad para el botón 'Agregar'
-  addBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const nombre = document.getElementById('nombre').value;
-    const precio = document.getElementById('precio').value;
+      if (!nombre || !precio) {
+        alert('Completa todos los campos.');
+        return;
+      }
 
-    if (!nombre || !precio) {
-      alert('Por favor, completa todos los campos.');
-      return;
+      editingCard.querySelector('h3').textContent = nombre;
+      editingCard.querySelector('.price').textContent = `$${parseFloat(precio).toFixed(2)}`;
+      editingCard = null;
+
+      closeModal();
+      alert('¡Platillo modificado con éxito!');
     }
 
-    const newCard = document.createElement('div');
-    newCard.classList.add('card');
-    newCard.innerHTML = `
-    <img src="https://via.placeholder.com/150" alt="${nombre}">
-    <h3>${nombre}</h3>
-    <p>Descripción del platillo</p>
-    <div class="price">$${parseFloat(precio).toFixed(2)}</div>
-    `;
+    // --- Manejar el botón "Guardar" ---
+    saveBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (editingCard) {
+        modificarPlatillo();
+      } else {
+        agregarPlatillo();
+      }
+    });
 
-    menuGrid.appendChild(newCard);
+    // --- Simular subida de imagen ---
+    imageUpload.addEventListener('click', () => {
+      alert('Funcionalidad de subir imagen no implementada aún.');
+    });
 
-    // Limpia el formulario usando reset() y limpieza manual
-    if (form.reset) {
-      form.reset();
-    }
-    // Limpieza forzada por si reset() falla
-    document.getElementById('nombre').value = '';
-    document.getElementById('precio').value = '';
+    // --- Delegación de eventos para todas las tarjetas ---
+    menuGrid.addEventListener('click', (e) => {
+      const card = e.target.closest('.card');
+      if (!card) return;
 
-    // Cierra el modal
-    modal.style.display = 'none';
+      // Modificar
+      if (e.target.classList.contains('modificar-btn')) {
+        document.getElementById('nombre').value = card.querySelector('h3').textContent;
+        document.getElementById('precio').value = card.querySelector('.price').textContent.replace('$', '');
+        editingCard = card;
+        modal.style.display = 'flex';
+      }
 
-    alert('¡Platillo agregado con éxito!');
-  });
-
-  // Simular subida de imagen
-  imageUpload.addEventListener('click', () => {
-    alert('Funcionalidad de subir imagen no implementada aún.');
-  });
+      // Eliminar
+      if (e.target.classList.contains('borrar-btn')) {
+        alert('Proximamente...')
+        // if (confirm(`¿Eliminar ${card.querySelector('h3').textContent}?`)) {
+        //   card.remove();
+        // }
+      }
+    });
 });

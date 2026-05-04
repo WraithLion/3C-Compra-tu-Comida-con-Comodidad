@@ -257,3 +257,38 @@ main {
     font-size: 20px;
     z-index: 1001;
 }
+/*  */
+/* Estilo para el menu de opciones para el platillo */
+/*  */
+.card {
+    position: relative;
+}
+
+.context-menu {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 100px;
+    z-index: 10;
+    padding: 5px 0;
+}
+
+.card:hover .context-menu {
+    display: block;
+}
+
+.menu-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.menu-option:hover {
+    background-color: #f4f4f4;
+}
