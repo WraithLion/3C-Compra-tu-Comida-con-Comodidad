@@ -8,7 +8,7 @@ class Cuenta(models.Model):
     usuario = models.CharField(max_length=50)
     correo = models.CharField(max_length=100)
     contraseña = models.CharField(max_length=100)
-    teléfono = models.CharField(max_length=15)
+    teléfono = models.CharField(max_length=10)
     direccion = models.CharField(max_length=200)
     CURP = models.CharField(max_length=18)
 
@@ -17,19 +17,32 @@ class Cuenta(models.Model):
         
 
 class Cliente(models.Model):
-    cuenta = models.OneToOneField(Cuenta, on_delete=models.CASCADE,null=True, blank=True)
+    nombre = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
+    correo = models.CharField(max_length=100)
+    contraseña = models.CharField(max_length=100)
+    teléfono = models.CharField(max_length=15)
 
     def __str__(self):
         return self.nombre
 
 class Restaurante(models.Model):
-    cuenta = models.OneToOneField(Cuenta, on_delete=models.CASCADE,null=True, blank=True)
+    nombre = models.CharField(max_length=100)
+    CURP = models.CharField(max_length=18)
+    usuario = models.CharField(max_length=50)
+    correo = models.CharField(max_length=100)
+    contraseña = models.CharField(max_length=100)
+    teléfono = models.CharField(max_length=15)
     
     def __str__(self):
         return self.nombre
 
 class Repartidor(models.Model):
-    cuenta = models.OneToOneField(Cuenta, on_delete=models.CASCADE,null=True, blank=True)
+    nombre = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
+    correo = models.CharField(max_length=100)
+    contraseña = models.CharField(max_length=100)
+    teléfono = models.CharField(max_length=15)
 
     def __str__(self):
         return self.nombre   
@@ -38,9 +51,9 @@ class Repartidor(models.Model):
 class Platillo(models.Model):
     IDelemento = models.CharField(max_length=100,null=False)
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, related_name='platillos',null=False)
-    imagen = models.ImageField(upload_to='platillos/', null=False, blank=True)
     nombre = models.CharField(max_length=100,null=False)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    imagen = models.ImageField(upload_to='platillos/', null=False, blank=True)
+    precio = models.DecimalField(max_digits=3, decimal_places=2)
 
     def __str__(self):
         return self.nombre
@@ -64,10 +77,10 @@ class Tarjeta(models.Model):
         return f"Tarjeta de {self.titular}"
         
 class Vehiculo(models.Model):
-    tipo = models.CharField(max_length=50)
-    modelo = models.CharField(max_length=100)
-    color = models.CharField(max_length=30)
-    placa = models.CharField(max_length=10)
+    tipo = models.CharField(max_length=25)
+    modelo = models.CharField(max_length=50)
+    color = models.CharField(max_length=15)
+    placa = models.CharField(max_length=7)
 
     def __str__(self):
         return f"{self.marca} {self.modelo} ({self.placa})"
