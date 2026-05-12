@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('addItemForm');
   const menuGrid = document.querySelector('.menu-grid');
   const imageUpload = document.getElementById('imageUpload');
-
+  const nombre = document.getElementById('nombre').value;
+  const precio = document.getElementById('precio').value;
   let editingCard = null;
 
   // --- Función: Abrir modal para agregar ---
@@ -34,9 +35,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function agregarPlatillo() {
       const nombre = document.getElementById('nombre').value;
       const precio = document.getElementById('precio').value;
+      const patronPrecio = /^\d{1,3}(\.\d{1,2})?$/;
+      let mensajeError = '';
 
-      if (!nombre || !precio) {
-        alert('Completa todos los campos.');
+      // Validar nombre
+      if (!nombre) {
+        mensajeError += 'El campo "Nombre" es necesario.\n';
+      }
+      if (nombre.length<3){
+        mensajeError += 'El campo "Nombre" debe ser un alimento o bebida de mínimo 3 letras. (Ejemplo: Pan, col, sopa, escamoles).\n';
+      }
+      // Validar precio
+      if(!precio){
+        mensajeError += 'El campo "Precio" es necesario.\n';
+      }
+
+      // Validar precio (existencia y formato)
+      if (!patronPrecio.test(precio)){
+        mensajeError += 'El campo "Precio" sólo permite números y no deben ser mayores a 3 cifras y 2 decimales.\n';
+      }
+
+
+      // Mostrar alerta si hay errores
+      if (mensajeError) {
+        alert(mensajeError.trim());
         return;
       }
 
@@ -62,9 +84,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function modificarPlatillo() {
       const nombre = document.getElementById('nombre').value;
       const precio = document.getElementById('precio').value;
+      const patronPrecio = /^\d{1,3}(\.\d{1,2})?$/;
+      let mensajeError = '';
 
-      if (!nombre || !precio) {
-        alert('Completa todos los campos.');
+      // Validar nombre
+      if (!nombre) {
+        mensajeError += 'El campo "Nombre" es necesario.\n';
+      }
+      if (nombre.length<3){
+        mensajeError += 'El campo "Nombre" debe ser un alimento o bebida de mínimo 3 letras. (Ejemplo: Pan, col, sopa, escamoles).\n';
+      }
+      // Validar precio
+      if(!precio){
+        mensajeError += 'El campo "Precio" es necesario.\n';
+      }
+
+      // Validar precio (existencia y formato)
+      if (!patronPrecio.test(precio)){
+        mensajeError += 'El campo "Precio" sólo permite números y no deben ser mayores a 3 cifras y 2 decimales.\n';
+      }
+
+
+      // Mostrar alerta si hay errores
+      if (mensajeError) {
+        alert(mensajeError.trim());
         return;
       }
 
