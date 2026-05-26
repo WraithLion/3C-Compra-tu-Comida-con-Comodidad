@@ -149,10 +149,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Eliminar
       if (e.target.classList.contains('borrar-btn')) {
-        alert('Proximamente...')
-        // if (confirm(`¿Eliminar ${card.querySelector('h3').textContent}?`)) {
-        //   card.remove();
-        // }
+
+        if (confirm(`¿Eliminar ${card.querySelector('h3').textContent}?`)) {
+           card.remove();
+           alert('El platillo se ha quitado del menú')
+        }
       }
     });
 });

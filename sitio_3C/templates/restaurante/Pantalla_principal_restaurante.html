@@ -10,8 +10,17 @@
   <header class="main-header">
         <div class="brand">3C</div>
         <nav class="nav-menu">
-            <a href="#promociones" class="nav-link">Promociones</a>
-            <a href="#restaurante" class="nav-link active">Restaurante</a>
+            <a href="/restaurante/promociones" class="nav-link">Promociones</a>
+            <!-- Cambiado a un botón para manejar el clic -->
+        <button id="btn-perfil" class="nav-link active" style="cursor: pointer;">
+            Restaurante
+        </button>
+
+        <!-- Menú oculto por defecto -->
+        <div id="menu-opciones" class="context-menu" style="display: none;">
+            <div class="menu-option cerrarSesion-boton">Cerrar Sesión</div>
+        </div>
+    </nav>
         </nav>
     </header>
 
@@ -86,5 +95,6 @@
 
 
   <script src="/static/js/restaurante/agregarElemento.js"></script>
+  <script src="/static/js/restaurante/opcionesPerfil.js"></script>
 </body>
 </html>
