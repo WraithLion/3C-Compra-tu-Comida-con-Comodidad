@@ -8,7 +8,7 @@ urlpatterns = [
     path('restaurante/',views.sitioPrincipalRestaurante,name='sitioPrincipal_Restaurante'),
     path('repartidor/',views.sitioPrincipalRepartidor,name='sitioPrincipal_Repartidor'),
 
-    path('crearCuenta/tipo', views.crearCuenta, name='tipoCuenta'),
+    path('crearCuenta/tipo', views.tipoCuenta, name='tipoCuenta'),
     path('crearCuenta/cliente', views.datosCliente, name='datosCliente'),
     path('crearCuenta/repartidor', views.datosRepartidor, name='datosRepartidor'),
     path('crearCuenta/restaurante', views.datosRestaurante, name='datosRestaurante'),
