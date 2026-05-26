@@ -17,6 +17,10 @@ def sitioPrincipalRestaurante(request):
 
     return render(request, 'restaurante/Pantalla_principal_restaurante.html', )
 
+def promocionesRestaurante(request):
+
+    return render(request, 'restaurante/Pantalla_promociones_restaurante.html',)
+
 def sitioPrincipalRepartidor(request):
 
     return render(request, 'repartidor/Pantalla_principal_repartidor.html', )
