@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menú del Restaurante</title>
+  <link rel="stylesheet" href="/static/css/restaurante/promociones.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="brand">3C</div>
+    <nav class="nav-menu">
+      <a href="/restaurante/promociones" class="nav-link">Promociones</a>
+      <button id="btn-perfil" class="nav-link active" style="cursor: pointer;">
+        Restaurante
+      </button>
+      <div id="menu-opciones" class="context-menu" style="display: none;">
+        <div class="menu-option cerrarSesion-boton">Cerrar Sesión</div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="menu-grid" id="menu-grid">
+
+      <!-- Tarjeta para Agregar Elemento (MODIFICADA) -->
+      <div class="card add-card" id="openModal">
+        <!-- Estado 1: Botón (Visible por defecto) -->
+        <div class="add-button">+</div>
+        <h3>Nueva Promoción</h3>
+
+        <!-- Estado 2: Instrucción (Oculto por defecto, se muestra con JS) -->
+        <div class="selection-instruction" style="display: none;">
+          <p>Elige el elemento para la promoción</p>
+        </div>
+      </div>
+
+      <!-- Tarjetas de Platillos (Ejemplos) -->
+      <!-- Nota: Estos elementos se reutilizarán visualmente como opciones de selección -->
+      <div class="card dish-card" data-dish-id="1">
+        <img src="platillo1.jpg" alt="Platillo 1">
+        <h3>Enchiladas</h3>
+        <p class="dish-desc">Deliciosas enchiladas rojas con pollo.</p>
+        <div class="price">$120</div>
+        <!-- Este menú contextual se ocultará al seleccionar un platillo para promoción -->
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
+      </div>
+
+      <div class="card dish-card" data-dish-id="2">
+        <img src="platillo2.jpg" alt="Platillo 2">
+        <h3>Tacos al Pastor</h3>
+        <p class="dish-desc">Tacos de piña y carne asada.</p>
+        <div class="price">$80</div>
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
+      </div>
+
+      <div class="card dish-card" data-dish-id="3">
+        <img src="platillo3.jpg" alt="Platillo 3">
+        <h3>Pozole</h3>
+        <p class="dish-desc">Tradicional pozole rojo.</p>
+        <div class="price">$110</div>
+        <div class="context-menu">
+          <div class="menu-option modificar-btn">Modificar</div>
+          <div class="menu-option borrar-btn">Eliminar</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+<!-- Modal para Agregar Promoción -->
+<div id="addItemModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <!-- Placeholder de imagen para la promoción -->
+    <div class="image-placeholder" id="imageUpload">
+      <img src="placeholder-icon.png" alt="Subir imagen">
+      <p>Subir imagen</p>
+    </div>
+
+    <form id="addItemForm" class="form-fields">
+      <!-- Campo oculto para guardar el ID del platillo seleccionado -->
+      <input type="hidden" id="selected-dish-id" name="selected-dish-id" required>
+
+      <div class="form-group">
+        <label for="tipo-Promocion">Tipo</label>
+        <select id="tipo-Promocion" name="tipo-Promocion" required>
+          <option value="combo">Combo</option>
+          <option value="descuento">Descuento</option>
+        </select>
+      </div>
+
+      <!-- Contenedor dinámico para los valores del combo -->
+      <div class="form-group combo-options" id="combo-fields">
+        <label for="combo-value">Valor del Combo</label>
+        <select id="combo-value" name="combo-value">
+          <option value="2x1">2 por 1</option>
+          <option value="3x2">3 por 2</option>
+        </select>
+      </div>
+
+      <!-- Contenedor dinámico para el valor del descuento -->
+      <div class="form-group discount-options" id="discount-fields" style="display: none;">
+        <label for="discount-value">Porcentaje de Descuento (%)</label>
+        <input type="number" id="discount-value" name="discount-value" min="1" max="100" placeholder="Ej: 20">
+      </div>
+
+      <div class="modal-buttons">
+        <button type="submit" class="btn-guardar">Crear</button>
+        <button type="button" class="btn-cancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="/static/js/restaurante/promociones.js"></script>
+  <script src="/static/js/restaurante/opcionesPerfil.js"></script>
+</body>
+</html>
