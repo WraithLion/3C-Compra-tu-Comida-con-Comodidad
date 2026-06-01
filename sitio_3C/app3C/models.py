@@ -65,6 +65,10 @@ class Pedido(models.Model):
 
     def __str__(self):
         return self.IDpedido
+
+class Orden(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='ordenes', null=False)
+    platillo = models.ForeignKey(Platillo, on_delete=models.CASCADE, related_name='ordenes', null=False)
         
 class Tarjeta(models.Model):
     numero = models.CharField(max_length=16)

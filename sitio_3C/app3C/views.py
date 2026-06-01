@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .models import Cuenta, Repartidor, Platillo, Pedido, Tarjeta, Vehiculo
+from .models import Cuenta, Repartidor, Platillo, Pedido, Orden, Tarjeta, Vehiculo
 
 
 # --- VISTAS PARA CUENTA ---
@@ -55,7 +55,13 @@ def copiasCarrito(request):
 
 # --- Vistas para que un cliente pueda hacer y ver un pedido
 def carrito(request):
-    return render(request, 'cliente/carrito.html')
+    usuario = request.user
+    if usuario.is_authenticated:
+        pedidos = Pedido.objects.filter(userCliente=usuario)
+        ordenes = Orden.objects.filter(pedido_in=pedidos).select_related('platillo')
+        return render(request, 'cliente/carrito.html', {'ordenes': ordenes})
+    else:
+        return render(request, 'error/loginError.html')
 
 def metodoPago(request):
     return render(request, 'cliente/metodoPago.html')
