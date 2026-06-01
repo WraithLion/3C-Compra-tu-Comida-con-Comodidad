@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario de tarjeta</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+
+        <!-- Mensaje de error -->
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Ingrese una cuenta bancaria para manejar depósitos</h1>
+
+        <form>
+            <label for="numero">Número de tarjeta:</label><br>
+            <input type="number" id="numero" name="numero"><br>
+            <label for="color">Titular de cuenta:</label><br>
+            <input type="text" id="color" name="color"><br>
+
+            <label for="mes">Mes de expiración:</label><br>
+            <input type="number" id="mes" name="mes"><br>
+            <label for="año">Año de expiración:</label><br>
+            <input type="number" id="año" name="año"><br>
+
+            <label for="ccv">CCV:</label><br>
+            <input type="text" id="ccv" name="ccv"><br>
+        </form>
+
+        <a href="{% url 'datosVehiculo' %}" class="btn-cancelar">
+            Cancelar
+        </a>
+
+        <a href="{% url 'sitioPrincipal_3C' %}" class="btn-cancelar">
+            Confirmar
+        </a>
+
+    </main>
+
+</body>

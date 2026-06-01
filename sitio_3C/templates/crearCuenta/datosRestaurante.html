@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear cuenta de restaurante</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+
+        <!-- Mensaje de error -->
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Ingrese sus datos personales</h1>
+        <form>
+            <label for="nombre">Nombre de negocio:</label><br>
+            <input type="text" id="nombre" name="nombre"><br>
+            <label for="direccion">Direccion:</label><br>
+            <input type="text" id="direccion" name="direccion"><br>
+            <label for="usuario">Nombre de usuario:</label><br>
+            <input type="text" id="usuario" name="usuario"><br>
+            <label for="correo">Correo electrónico de representante:</label><br>
+            <input type="email" id="correo" name="correo"><br>
+            <label for="telefono">Número telefónico:</label><br>
+            <input type="tel" id="telefono" name="telefono"><br>
+            <label for="contraseña">Nombre de usuario:</label><br>
+            <input type="text" id="contraseña" name="contraseña"><br>
+        </form>
+
+        <a href="{% url 'tipoCuenta' %}" class="btn-cancelar">
+            Cancelar
+        </a>
+
+        <a href="{% url 'datosTarjeta' %}" class="btn-cancelar">
+            Confirmar
+        </a>
+
+    </main>
+
+</body>

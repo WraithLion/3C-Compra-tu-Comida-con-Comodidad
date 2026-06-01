@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario de vehículo</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+
+        <!-- Mensaje de error -->
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Ingrese los datos de su vehículo</h1>
+
+        <form>
+            <input type="radio" id="auto" name="tipoVehiculo" value="auto">
+            <label for="auto">Automóvil</label><br>
+            <input type="radio" id="moto" name="tipoVehiculo" value="moto">
+            <label for="moto">Motocicleta</label><br>
+
+            <label for="modelo">Modelo de vehículo:</label><br>
+            <input type="text" id="modelo" name="modelo"><br>
+            <label for="color">Color de vehículo:</label><br>
+            <input type="text" id="color" name="color"><br>
+            <label for="placa">Placa de vehículo:</label><br>
+            <input type="text" id="nombre" name="nombre"><br>
+        </form>
+
+        <a href="{% url 'datosRepartidor' %}" class="btn-cancelar">
+            Cancelar
+        </a>
+
+        <a href="{% url 'datosTarjeta' %}" class="btn-cancelar">
+            Confirmar
+        </a>
+
+    </main>
+
+</body>
