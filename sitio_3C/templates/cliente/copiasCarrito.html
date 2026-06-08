@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Añadir elemento al carrito</title>
+  <link rel="stylesheet" href="static/css/styles.css" />
+</head>
+
+<body>
+    <h1>Elija las copias del platillo que desea ordenar</h1>
+    <p>Platillo: {{platillo.nombre}}</p>
+    <p>Precio: {{platillo.precio}}$</p>
+    <form method="post">
+        <label for="cop">Copias:</label>
+        <input type="number" min="1" id="cop" name="cop"><br>
+        <button type="submit"> Confirmar </button> <br>
+    </form><br>
+    <button onclick="history.back()"> Cancelar </button>
+</body>

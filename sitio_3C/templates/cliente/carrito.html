@@ -18,8 +18,10 @@
         <h1>Carrito</h1>
 
         {% for orden in ordenes %}
-            <p>{{ orden.platillo.nombre }}</p>
-            <p>${{ orden.platillo.precio }}</p>
+            <p>{{orden.platillo.nombre}}</p>
+            <p>{{orden.platillo.copias}}</p>
+            <p>${{orden.platillo.precio}}</p>
+
             <button class="Eliminar"> Eliminar </button>
         {% endfor %}
 

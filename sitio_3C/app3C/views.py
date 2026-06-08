@@ -131,7 +131,9 @@ def datosVehiculo(request):
 
 # --- Vista para agregar un elemento al carrito de un cliente
 def copiasCarrito(request):
-    return render(request, 'cliente/copiasCarrito.html')
+    IDplatillo = request.session.get('IDpla')
+    platillo = get_object_or_404(Platillo, IDelemento = IDplatillo)
+    return render(request, 'cliente/copiasCarrito.html', {'platillo' : platillo})
 
 # --- Vistas para que un cliente pueda hacer y ver un pedido
 def carrito(request):
