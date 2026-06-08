@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .models import Cuenta, Repartidor, Platillo, Pedido, Orden, Tarjeta, Vehiculo
+from .models import Cuenta, Cliente, Repartidor, Restaurante, Platillo, Pedido, Orden, Tarjeta, Vehiculo
 
 
 # --- VISTAS PARA CUENTA ---
@@ -35,18 +36,97 @@ def tipoCuenta(request):
     return render(request, 'crearCuenta/tipoCuenta.html')
 
 def datosCliente(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        us = request.POST.get('us')
+        cor = request.POST.get('cor')
+        tel = request.POST.get('tel')
+        con = request.POST.get('con')
+
+        cuenta = Cuenta.objects.create(
+            nombre = nom,
+            usuario = us,
+            correo = cor,
+            teléfono = tel,
+            contraseña = con
+        )
+        Cliente.objects.create(IDcuenta = cuenta)
+        messages.success(request, "Cuenta creada con éxito. Inicie sesión para empezar a usar la aplicación")
+        return redirect('sitioPrincipal_3C')
     return render(request, 'crearCuenta/datosCliente.html')
 
 def datosRepartidor(request):
+    if request.method == 'POST':
+        cuenta = Cuenta.objects.create(
+            nombre = request.POST.get('nom'),
+            usuario = request.POST.get('us'),
+            correo = request.POST.get('cor'),
+            teléfono = request.POST.get('tel'),
+            contraseña = request.POST.get('con')
+        )
+        Repartidor.objects.create(
+            IDcuenta = cuenta,
+            CURP = request.POST.get('cur')
+        )
+        request.session['username'] = cuenta.usuario
+        return redirect('datosVehiculo')
     return render(request, 'crearCuenta/datosRepartidor.html')
 
 def datosRestaurante(request):
+    if request.method == 'POST':
+        nom = request.POST.get('nom')
+        dir = request.POST.get('dir')
+        us = request.POST.get('us')
+        cor = request.POST.get('cor')
+        tel = request.POST.get('tel')
+        con = request.POST.get('con')
+
+        cuenta = Cuenta.objects.create(
+            nombre = nom,
+            usuario = us,
+            correo = cor,
+            teléfono = tel,
+            contraseña = con
+        )
+        Restaurante.objects.create(
+            IDcuenta = cuenta,
+            direccion = dir
+        )
+        request.session['username'] = us
+        return redirect('datosTarjeta')
     return render(request, 'crearCuenta/datosRestaurante.html')
 
 def datosTarjeta(request):
+    username = request.session.get('username')
+    if request.method == 'POST':
+        num = request.POST.get('num')
+        tit = request.POST.get('tit')
+        mmaa = request.POST.get('mmaa')
+        cc = request.POST.get('cc')
+    
+        Tarjeta.objects.create(
+            numero = num,
+            usuario = get_object_or_404(Cuenta, usuario = username),
+            titular = tit,
+            vencimiento = mmaa,
+            ccv = cc
+        )
+        messages.success(request, "Cuenta creada con éxito. Inicie sesión para empezar a usar la aplicación")
+        return redirect('sitioPrincipal_3C')
     return render(request, 'crearCuenta/datosTarjeta.html')
 
 def datosVehiculo(request):
+    username = request.session.get('username')
+    if request.method == 'POST':
+        cuenta = get_object_or_404(Cuenta, usuario = username)
+        Vehiculo.objects.create(
+            tipo = request.POST.get('tipoVehiculo'),
+            modelo = request.POST.get('mod'),
+            color = request.POST.get('col'),
+            placa = request.POST.get('pla'),
+            propietario = get_object_or_404(Repartidor, IDcuenta = cuenta)
+        )
+        return redirect('datosTarjeta')
     return render(request, 'crearCuenta/datosVehiculo.html')
 
 # --- Vista para agregar un elemento al carrito de un cliente

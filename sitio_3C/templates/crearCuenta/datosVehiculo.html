@@ -17,26 +17,28 @@
     <main class="welcome-section">
         <h1>Ingrese los datos de su vehículo</h1>
 
-        <form>
+        <form method="post">
+            {% csrf_token %}
             <input type="radio" id="auto" name="tipoVehiculo" value="auto">
             <label for="auto">Automóvil</label><br>
+            
             <input type="radio" id="moto" name="tipoVehiculo" value="moto">
             <label for="moto">Motocicleta</label><br>
 
             <label for="modelo">Modelo de vehículo:</label><br>
-            <input type="text" id="modelo" name="modelo"><br>
+            <input type="text" id="mod" name="mod"><br>
+            
             <label for="color">Color de vehículo:</label><br>
-            <input type="text" id="color" name="color"><br>
+            <input type="text" id="col" name="col"><br>
+            
             <label for="placa">Placa de vehículo:</label><br>
-            <input type="text" id="nombre" name="nombre"><br>
+            <input type="text" id="pla" name="pla"><br>
+
+            <button type="submit"> Confirmar </button>
         </form>
 
         <a href="{% url 'datosRepartidor' %}" class="btn-cancelar">
             Cancelar
-        </a>
-
-        <a href="{% url 'datosTarjeta' %}" class="btn-cancelar">
-            Confirmar
         </a>
 
     </main>

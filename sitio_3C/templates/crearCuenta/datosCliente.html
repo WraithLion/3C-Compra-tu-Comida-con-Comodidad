@@ -11,30 +11,43 @@
 
         <!-- Mensaje de error -->
     {% if error %}
-    <div class="error-message">{{ error }}</div>
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <!--Mensaje de exito-->
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+                alert("{{ message }}");
+            </script>
+        {% endfor %}
     {% endif %}
 
     <main class="welcome-section">
         <h1>Ingrese sus datos personales</h1>
-        <form>
-            <label for="nombre">Nombre completo:</label><br>
-            <input type="text" id="nombre" name="nombre"><br>
-            <label for="usuario">Nombre de usuario:</label><br>
-            <input type="text" id="usuario" name="usuario"><br>
-            <label for="correo">Correo electrónico:</label><br>
-            <input type="email" id="correo" name="correo"><br>
-            <label for="telefono">Número telefónico:</label><br>
-            <input type="tel" id="telefono" name="telefono"><br>
-            <label for="contraseña">Contraseña:</label><br>
-            <input type="text" id="contraseña" name="contraseña"><br>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="nom">Nombre completo:</label><br>
+            <input type="text" id="nom" name="nom"><br>
+            
+            <label for="us">Nombre de usuario:</label><br>
+            <input type="text" id="us" name="us"><br>
+            
+            <label for="cor">Correo electrónico:</label><br>
+            <input type="email" id="cor" name="cor"><br>
+            
+            <label for="tel">Número telefónico:</label><br>
+            <input type="tel" id="tel" name="tel"><br>
+            
+            <label for="con">Contraseña:</label><br>
+            <input type="text" id="con" name="con"><br>
+
+            <button type="submit"> Confirmar </button>
         </form>
 
         <a href="{% url 'tipoCuenta' %}" class="btn-cancelar">
             Cancelar
-        </a>
-
-        <a href="{% url 'sitioPrincipal_3C' %}" class="btn-cancelar">
-            Confirmar
         </a>
 
     </main>

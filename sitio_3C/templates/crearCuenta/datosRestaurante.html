@@ -16,27 +16,31 @@
 
     <main class="welcome-section">
         <h1>Ingrese sus datos personales</h1>
-        <form>
-            <label for="nombre">Nombre de negocio:</label><br>
-            <input type="text" id="nombre" name="nombre"><br>
-            <label for="direccion">Direccion:</label><br>
-            <input type="text" id="direccion" name="direccion"><br>
-            <label for="usuario">Nombre de usuario:</label><br>
-            <input type="text" id="usuario" name="usuario"><br>
-            <label for="correo">Correo electrónico de representante:</label><br>
-            <input type="email" id="correo" name="correo"><br>
-            <label for="telefono">Número telefónico:</label><br>
-            <input type="tel" id="telefono" name="telefono"><br>
-            <label for="contraseña">Nombre de usuario:</label><br>
-            <input type="text" id="contraseña" name="contraseña"><br>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="nom">Nombre de negocio:</label><br>
+            <input type="text" id="nom" name="nom"><br>
+            
+            <label for="dir">Direccion:</label><br>
+            <input type="text" id="dir" name="dir"><br>
+            
+            <label for="us">Nombre de usuario:</label><br>
+            <input type="text" id="us" name="us"><br>
+            
+            <label for="cor">Correo electrónico de representante:</label><br>
+            <input type="email" id="cor" name="cor"><br>
+            
+            <label for="tel">Número telefónico:</label><br>
+            <input type="tel" id="tel" name="tel"><br>
+            
+            <label for="con">Contraseña:</label><br>
+            <input type="text" id="con" name="con"><br>
+
+            <button type="submit"> Confirmar </button>
         </form>
 
         <a href="{% url 'tipoCuenta' %}" class="btn-cancelar">
             Cancelar
-        </a>
-
-        <a href="{% url 'datosTarjeta' %}" class="btn-cancelar">
-            Confirmar
         </a>
 
     </main>
