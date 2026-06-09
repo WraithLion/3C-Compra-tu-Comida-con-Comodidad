@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carrito</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+
+</head>
+
+<body>
+    <!-- Mensaje de error -->
+    {% if error %}
+        <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Carrito</h1>
+
+        {% for orden in ordenes %}
+            <p>{{orden.platillo.nombre}}</p>
+            <p>{{orden.platillo.copias}}</p>
+            <p>${{orden.platillo.precio}}</p>
+
+            <button class="Eliminar"> Eliminar </button>
+        {% endfor %}
+
+        <!-- Total de cuenta. Falta comletar -->
+        
+        <a href="{% url 'sitioPrincipal_3C' %}" class="btn-cancelar">
+            Confirmar pedido
+        </a>
+
+        <!-- Botón para salir del carrito. Llenar cuando exista la url del catálogo
+        <a href="{% url 'sitioPrincipal_3C' %}" class="btn-cancelar">
+            Cancelar
+        </a>
+        -->
+
+    </main>
+
+</body>

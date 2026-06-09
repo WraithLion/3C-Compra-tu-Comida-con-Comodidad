@@ -8,6 +8,15 @@
 
 </head>
 <body>
+
+  {% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+  {% endif %}
+
   <header class="main-header">
         <div class="brand">3C</div>
         <nav class="nav-menu">

@@ -28,4 +28,5 @@ urlpatterns = [
 
     path('restaurante/ordenes', views.ordenes, name='ordenesPendientes'),
 
+    path('cliente/carrito', views.carrito, name='carritoSinSesion')
 ]

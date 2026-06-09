@@ -3,33 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bienvenido a 3C</title>
-  <link rel="stylesheet" href="static/css/styles.css" />
+  <title>Tipo de cuenta a crear</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
 
 </head>
+
 <body>
+
+<!-- Mensaje de error -->
+{% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
+
   <main class="welcome-section">
-    <h1>Bienvenido a 3C</h1>
-    <p>Conectamos clientes, restaurantes y repartidores.</p>
+    <h1>Tipo de cuenta</h1>
+    <p>Escoja el tipo de cuenta que desea crear.</p>
 
     <div class="role-cards">
-      <div class="card">
+
+      <a href="{% url 'datosCliente' %}" class="card">
         <div class="placeholder-image"></div>
         <h2>Cliente</h2>
-        <p>Descubre y pide a tu restaurante favorito.</p>
-      </div>
-      <div class="card">
+        <p>Soy un cliente y deseo comprar en la aplicación.</p>
+      </a>
+
+      <a href="{% url 'datosRestaurante' %}" class="card">
         <div class="placeholder-image"></div>
         <h2>Restaurante</h2>
-        <p>Amplía tu alcance y recibe pedidos en línea.</p>
-      </div>
-      <div class="card">
+        <p>Soy representante de un restaurante y deseo vender con la aplicación.</p>
+      </a>
+
+      <a href="{% url 'datosRepartidor' %}" class="card">
         <div class="placeholder-image"></div>
         <h2>Repartidor</h2>
-        <p>Amplía tu alcance y recibe pedidos en línea.</p>
+        <p>Quiero trabajar en 3C como repartidor.</p>
       </div>
-      <div class>
 
-            </body>
+    </div><br>
+
+    <a href="{% url 'sitioPrincipal_3C' %}" class="btn-cancelar">
+      Cancelar
+    </a>
+
+  </main>
+
+  <script src="../static/js/crearCuenta.js"></script>
+
+</body>
 
 </html>
