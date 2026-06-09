@@ -25,14 +25,15 @@ class Restaurante(models.Model):
     direccion = models.CharField(max_length=200, default='')
     
     def __str__(self):
-        return self.nombre
+        # Muestra: "Nombre del Restaurante (Dirección)"
+        return f"{self.IDcuenta.nombre} - {self.direccion}"
 
 class Repartidor(models.Model):
     IDcuenta = models.ForeignKey(Cuenta, on_delete=models.CASCADE, related_name='repartidores', null=False, default=1)
     CURP = models.CharField(max_length=18, default='000000000000000000')
 
     def __str__(self):
-        return self.nombre   
+        return self.IDcuenta
                                                 
                                                                         
 class Platillo(models.Model):
@@ -44,6 +45,48 @@ class Platillo(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Promociones(models.Model):
+
+    IDelemento = models.CharField(max_length=25,null=False)
+
+    # Relación correcta: Una promoción pertenece a un Platillo específico
+    platillo = models.ForeignKey(
+        Platillo,
+        on_delete=models.CASCADE,
+        related_name='promociones' # Esto te permitirá hacer: mi_platillo.promociones.all()
+    )
+
+
+    # Opciones para el campo 'tipo'
+    TIPO_PROMOCION = [
+        ('descuento', 'Descuento'),
+        ('combo', 'Combo'),
+    ]
+
+
+
+    # Uso de choices para restringir los valores
+    tipo = models.CharField(
+        max_length=9,
+        choices=TIPO_PROMOCION,
+        default='descuento'
+    )
+
+    valor = models.CharField(
+        max_length=20,
+        null=False,
+        help_text="Porcentaje (ej: 15) o promoción (ej: 2x1, 3x2)"
+    )
+
+    def __str__(self):
+        if self.tipo == 'descuento':
+            return f"{self.valor}% de descuento en {self.platillo.nombre}"
+        else:
+            return f"Combo {self.valor} en {self.platillo.nombre}"
+
+    def obtener_imagen(self):
+        return self.platillo.imagen
 
         
 class Pedido(models.Model):

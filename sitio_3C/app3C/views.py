@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .models import Cuenta, Cliente, Repartidor, Restaurante, Platillo, Pedido, Orden, Tarjeta, Vehiculo
+from .models import Cuenta, Cliente, Repartidor, Restaurante, Platillo, Promociones, Pedido, Orden, Tarjeta, Vehiculo
 
 
 # --- VISTAS PARA CUENTA ---
