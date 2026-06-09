@@ -238,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             `;
         } else {
-            // Si es COMBO, mantiene el formato tradicional que ya tenías
+            // Si es COMBO, mantiene consistencia en el formato del precio
             priceHTML = `<div class="price">${dish.price}</div>`;
         }
 
