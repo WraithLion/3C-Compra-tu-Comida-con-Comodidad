@@ -2,7 +2,7 @@
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("modalTitle");
 const iniciarSesion = document.getElementById("iniciarSesionIH");
-const crearCuenta = document.getElementById("crearCuentaIH");
+const cancelarBoton = document.getElementById("cancelar")
 const cerrarBoton = document.querySelector(".close");
 
 // Abrir modal como "Iniciar sesión"
@@ -10,10 +10,12 @@ iniciarSesion.onclick = function() {
     modal.style.display = "flex";
 }
 
-// Abrir modal como "Crear cuenta"
-crearCuenta.onclick = function() {
-    modal.style.display = "flex";
+
+// Cerrar formulario al hacer clic en botón Cancelar
+cancelarBoton.onclick = function() {
+    modal.style.display = "none";
 }
+
 
 // Cerrar modal
 cerrarBoton.onclick = function() {
