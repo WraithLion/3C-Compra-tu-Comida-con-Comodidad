@@ -49,6 +49,7 @@ class Platillo(models.Model):
 class Pedido(models.Model):
     IDpedido = models.CharField(max_length=100)
     userCliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name='pedidos', null=False, default=1)
+    activo = models.BooleanField(default=False)
     repAsignado = models.ForeignKey(Repartidor, on_delete=models.SET_NULL, related_name='pedidos', null=True, blank=True)
 
     def __str__(self):
