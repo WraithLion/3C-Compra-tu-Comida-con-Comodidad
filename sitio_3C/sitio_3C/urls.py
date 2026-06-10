@@ -24,6 +24,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+
 if settings.DEBUG:
+    # 1. Servir archivos de medios (imágenes subidas) - CORRECTO
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# 2. Servir archivos estáticos (CSS/JS) - CORRECTO (Solo esto)
+# Elimina la línea de STATIC_ROOT de arriba
+if settings.STATICFILES_DIRS:
+    # Nota: STATICFILES_DIRS es una lista/tupla, tomamos el primer elemento
+    document_root = settings.STATICFILES_DIRS
+    urlpatterns += static(settings.STATIC_URL, document_root=document_root)
