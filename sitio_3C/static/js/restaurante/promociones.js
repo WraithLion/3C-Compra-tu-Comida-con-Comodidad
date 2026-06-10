@@ -16,93 +16,108 @@ document.addEventListener('DOMContentLoaded', function () {
     const discountValueInput = document.getElementById('discount-value');
     const comboValueSelect = document.getElementById('combo-value');
 
+    // Referencias de Imagen
+    const imagePreview = document.getElementById('promo-image-preview');
+    const imageUploadText = document.getElementById('image-upload-text');
+    const imageFileInput = document.getElementById('image-file-input');
+    const imageUploadContainer = document.getElementById('imageUpload');
+
     // Estado
     let isSelectionMode = false;
     let selectedDishData = null;
     let originalCardHTMLs = [];
-
-    // NUEVO: Estado para el control de la modificación
     let isEditMode = false;
     let editingCard = null;
+    let newImageFile = null;
 
-    // --- 2. Iniciar Selección (Cambiar apariencia de tarjetas Y botón) ---
-    openModalBtn.addEventListener('click', function() {
-        if (isSelectionMode) return;
+    // --- 2. Iniciar Selección (Modo Crear) ---
+    if (openModalBtn) {
+        openModalBtn.addEventListener('click', function() {
+            if (isSelectionMode) return;
 
-        isSelectionMode = true;
+            isSelectionMode = true;
+            openModalBtn.classList.add('in-selection-mode');
 
-        // CAMBIO: Activar clase para cambiar el contenido del botón
-        openModalBtn.classList.add('in-selection-mode');
+            const dishCards = document.querySelectorAll('.dish-card');
+            originalCardHTMLs = [];
 
-        const dishCards = document.querySelectorAll('.dish-card');
-        originalCardHTMLs = [];
+            dishCards.forEach((card, index) => {
+                originalCardHTMLs.push(card.innerHTML);
 
-        dishCards.forEach((card, index) => {
-            // 1. Guardar HTML original
-            originalCardHTMLs.push(card.innerHTML);
+                const h3Element = card.querySelector('h3');
+                const priceElement = card.querySelector('.price');
+                const imgElement = card.querySelector('img');
 
-            // 2. Extraer datos
-            const name = card.querySelector('h3').textContent;
-            const priceText = card.querySelector('.price').textContent;
-            const priceValue = priceText.replace('$', '').replace(',', '');
-            const id = card.getAttribute('data-dish-id') || (index + 1);
-            const imgSrc = card.querySelector('img').src;
+                const name = h3Element ? h3Element.textContent : 'Platillo sin nombre';
+                const priceText = priceElement ? priceElement.textContent : '$0';
+                const priceValue = priceText.replace('$', '').replace(',', '').trim();
+                const id = card.getAttribute('data-dish-id') || `TEMP-${index + 1}`;
+                const imgSrc = imgElement ? imgElement.src : '/static/restaurante/placeholder-icon.png';
 
-            // 3. REEMPLAZAR contenido (Prototipo 2)
-            card.innerHTML = `
-            <div style="height: 180px; overflow: hidden;">
-            <img src="${imgSrc}" alt="Platillo" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            <div style="padding: 15px; text-align: center;">
-            <h3 style="font-size: 16px; margin-bottom: 5px;">${name}</h3>
-            <p style="font-weight: bold; color: #4a90e2;">$${priceValue}</p>
-            </div>
-            `;
+                card.innerHTML = `
+                <div style="height: 180px; overflow: hidden;">
+                <img src="${imgSrc}" alt="Platillo" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 15px; text-align: center;">
+                <h3 style="font-size: 16px; margin-bottom: 5px;">${name}</h3>
+                <p style="font-weight: bold; color: #4a90e2;">$${parseFloat(priceValue).toFixed(2)}</p>
+                </div>
+                `;
 
-            // 4. Guardar precio real en atributo data
-            card.setAttribute('data-price-real', priceValue);
-
-            card.classList.add('selectable');
-            card.style.cursor = 'pointer';
+                card.setAttribute('data-price-real', priceValue);
+                card.classList.add('selectable', 'mostrar-seleccion');
+                card.style.cursor = 'pointer';
+            });
         });
-    });
+    }
 
-    // --- 3. Selección de Platillo (Solo al CREAR) ---
-    menuGrid.addEventListener('click', function(e) {
-        if (!isSelectionMode) return;
+    // --- 3. Selección de Platillo ---
+    if (menuGrid) {
+        menuGrid.addEventListener('click', function(e) {
+            if (!isSelectionMode) return;
 
-        const card = e.target.closest('.dish-card');
+            const card = e.target.closest('.dish-card');
 
-        if (card) {
-            document.querySelectorAll('.dish-card').forEach(c => c.classList.remove('selected-for-promotion'));
-            card.classList.add('selected-for-promotion');
+            if (card) {
+                document.querySelectorAll('.dish-card').forEach(c => c.classList.remove('selected-for-promotion'));
+                card.classList.add('selected-for-promotion');
 
-            const name = card.querySelector('h3').textContent;
-            const id = card.getAttribute('data-dish-id');
-            const imgSrc = card.querySelector('img').src;
-            const priceReal = card.getAttribute('data-price-real');
+                const name = card.querySelector('h3').textContent;
+                const id = card.getAttribute('data-dish-id');
+                const imgElement = card.querySelector('img');
+                const imgSrc = imgElement ? imgElement.src : '';
+                const priceReal = card.getAttribute('data-price-real');
 
-            selectedDishData = {
-                id: id,
-                name: name,
-                img: imgSrc,
-                price: `$${parseFloat(priceReal).toFixed(2)}`,
-                              priceValue: parseFloat(priceReal)
-            };
+                selectedDishData = {
+                    id: id,
+                    name: name,
+                    img: imgSrc,
+                    price: `$${parseFloat(priceReal).toFixed(2)}`,
+                                  priceValue: parseFloat(priceReal)
+                };
 
-            openModalForPromotion();
-        }
-    });
+                openModalForPromotion();
+            }
+        });
+    }
 
-    // --- 4. Modal y Formulario ---
+    // --- 4. Funciones del Modal ---
+
+    // Abrir modal para CREAR
     function openModalForPromotion() {
         form.reset();
         if (selectedDishInput) selectedDishInput.value = selectedDishData.id;
 
-        // Ajustar interfaz del modal para el modo de creación por defecto
+        // Configurar imagen para CREACIÓN (Placeholder y activado)
+        if (imagePreview) {
+            imagePreview.src = selectedDishData.img; // Usamos la imagen del platillo seleccionado
+        }
+        if (imageUploadText) imageUploadText.textContent = "";
+        if (imageUploadContainer) imageUploadContainer.style.cursor = 'default'; // Activar clic
+
+        newImageFile = null;
         isEditMode = false;
         saveBtn.textContent = 'Crear';
-
         modal.style.display = 'flex';
         togglePromotionFields('combo');
     }
@@ -123,15 +138,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- 5. Guardar (Creación o Modificación Directa) ---
+    // --- 5. Manejo de Imagen (Clic y Cambio) ---
+
+
+
+    // Cuando el usuario selecciona un archivo nuevo
+    if (imageFileInput) {
+        imageFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                newImageFile = file;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    if (imagePreview) {
+                        imagePreview.src = event.target.result;
+                    }
+                    if (imageUploadText) {
+                        imageUploadText.textContent = "";
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // --- 6. Guardar (Crear o Modificar) ---
     if (saveBtn) {
-        saveBtn.addEventListener('click', function(e) {
+        saveBtn.addEventListener('click', function (e) {
             e.preventDefault();
 
             const tipo = tipoSelect.value;
             let valorPromo = '';
 
-            // Validaciones según el tipo de promoción
             if (tipo === 'combo') {
                 valorPromo = comboValueSelect.value;
             } else {
@@ -143,65 +181,74 @@ document.addEventListener('DOMContentLoaded', function () {
                 valorPromo = `${pct}%`;
             }
 
-            // NUEVO: Bifurcación basada en si estamos editando o creando
             if (isEditMode) {
-                // ACTUALIZAR TARJETA EXISTENTE
+                // --- MODO EDICIÓN ---
                 if (!editingCard) return;
 
-                // 1. Actualizar el texto del tipo de promoción
-                const promoTextElement = editingCard.querySelector('p');
-                if (promoTextElement) {
-                    promoTextElement.textContent = `${tipo.toUpperCase()}: ${valorPromo}`;
+                const promoId = editingCard.getAttribute('data-current-promo-id');
+                if (!promoId) {
+                    alert('Error: No se encontró el ID de la promoción.');
+                    return;
                 }
 
-                // 2. Actualizar el contenedor de precios dinámicamente si es Descuento o regresarlo a Combo
-                // Buscamos si ya tiene un contenedor de precios o la clase clásica .price
-                let priceContainer = editingCard.querySelector('.price-container');
-                let singlePrice = editingCard.querySelector('.price');
+                const updatedData = {
+                    tipo: tipo,
+                    valor: valorPromo
+                };
 
-                // Extraer precio original base guardado en el atributo de la tarjeta
-                const precioOriginalTexto = editingCard.getAttribute('data-price');
-                const precioOriginalNum = parseFloat(precioOriginalTexto.replace('$', ''));
-
-                if (tipo === 'descuento') {
-                    const porcentaje = parseFloat(valorPromo.replace('%', ''));
-                    const precioConDescuento = precioOriginalNum * (1 - (porcentaje / 100));
-
-                    const nuevoHTMLPrecios = `
-                    <del style="color: #666; font-size: 14px;">$${precioOriginalNum.toFixed(2)}</del>
-                    <div class="price" style="font-weight: bold; font-size: 20px; color: #000; margin-top: 5px;">
-                    $${precioConDescuento.toFixed(2)}
-                    </div>
-                    `;
-
-                    if (priceContainer) {
-                        priceContainer.innerHTML = nuevoHTMLPrecios;
-                    } else if (singlePrice) {
-                        // Si antes era combo, transformamos el contenedor estático al nuevo formato
-                        const container = document.createElement('div');
-                        container.classList.add('price-container');
-                        container.style.cssText = "text-align: center; margin-top: 10px;";
-                        container.innerHTML = nuevoHTMLPrecios;
-                        singlePrice.replaceWith(container);
+                fetch(`/restaurante/promociones/${promoId}/modificar/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(updatedData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'La promoción se ha modificado con éxito');
+                        location.reload();
+                    } else {
+                        alert(data.error || 'Error al modificar la promoción.');
                     }
-                } else {
-                    // Si se cambió de Descuento a Combo, reestablecemos el precio único normal
-                    if (priceContainer) {
-                        const normalPriceDiv = document.createElement('div');
-                        normalPriceDiv.classList.add('price');
-                        normalPriceDiv.textContent = precioOriginalTexto;
-                        priceContainer.replaceWith(normalPriceDiv);
-                    } else if (singlePrice) {
-                        singlePrice.textContent = precioOriginalTexto;
-                    }
-                }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                    alert('Error de conexión al servidor.');
+                });
 
-                alert('La promoción se ha modificado con éxito');
-            }else {
-                // CREAR NUEVA TARJETA
+            } else {
+                // --- MODO CREACIÓN ---
                 if (!selectedDishData) return;
-                crearPromocion(selectedDishData, tipo, valorPromo);
-                alert('La promoción se ha creado con éxito');
+
+                const dataToSend = {
+                    platillo_id: selectedDishData.id,
+                    tipo: tipo,
+                    valor: valorPromo
+                };
+
+                fetch('/restaurante/promociones/agregar/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(dataToSend)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'La promoción se ha creado con éxito');
+                        location.reload();
+                    } else {
+                        alert(data.error || 'Ocurrió un error al procesar la solicitud.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error de red:', error);
+                    alert('Error de conexión al servidor.');
+                });
             }
 
             closeModal();
@@ -209,83 +256,44 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // --- 6. Crear Tarjeta Final ---
-    function crearPromocion(dish, tipo, valor) {
-        const newCard = document.createElement('div');
-        newCard.classList.add('card');
-        newCard.setAttribute('data-dish-id', dish.id);
-        newCard.setAttribute('data-price', dish.price);
-
-        let priceHTML = '';
-
-        if (tipo.toLowerCase() === 'descuento') {
-            // 1. Obtener el precio numérico original (ej: "$120.00" -> 120)
-            const precioOriginal = dish.priceValue;
-
-            // 2. Extraer el porcentaje (ej: "20%" -> 20)
-            const porcentaje = parseFloat(valor.replace('%', ''));
-
-            // 3. Calcular el nuevo precio con descuento aplicado
-            const precioConDescuento = precioOriginal * (1 - (porcentaje / 100));
-
-            // 4. Formato como en tu imagen: Precio original tachado arriba y el nuevo abajo en negrita
-            priceHTML = `
-            <div class="price-container" style="text-align: center; margin-top: 10px;">
-            <del style="color: #666; font-size: 14px;">$${precioOriginal.toFixed(2)}</del>
-            <div class="price" style="font-weight: bold; font-size: 20px; color: #000; margin-top: 5px;">
-            $${precioConDescuento.toFixed(2)}
-            </div>
-            </div>
-            `;
-        } else {
-            // Si es COMBO, mantiene consistencia en el formato del precio
-            priceHTML = `<div class="price">${dish.price}</div>`;
-        }
-
-        newCard.innerHTML = `
-        <img src="${dish.img}" alt="${dish.name}">
-        <h3>${dish.name}</h3>
-        <p style="color: #007bff; font-weight: bold; padding: 0 15px; text-align: center;">
-        ${tipo.toUpperCase()}: ${valor}
-        </p>
-        ${priceHTML}
-        <div class="context-menu">
-        <div class="menu-option modificar-btn">Modificar</div>
-        <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-        `;
-
-        menuGrid.insertBefore(newCard, openModalBtn.nextSibling);
-    }
-
-    // --- 7. RESTAURAR ESTADO ---
+    // --- 7. Resetear y Cerrar ---
     function resetSelectionMode() {
         isSelectionMode = false;
         selectedDishData = null;
-        editingCard = null; // Limpiar referencia de edición
+        editingCard = null;
         isEditMode = false;
-        openModalBtn.classList.remove('in-selection-mode');
+
+        if (openModalBtn) openModalBtn.classList.remove('in-selection-mode');
 
         const dishCards = document.querySelectorAll('.dish-card');
-
         dishCards.forEach((card, index) => {
             if (originalCardHTMLs[index]) {
                 card.innerHTML = originalCardHTMLs[index];
             }
             card.classList.remove('selectable', 'selected-for-promotion');
             card.style.cursor = 'default';
+            card.classList.remove('mostrar-seleccion');
         });
 
         originalCardHTMLs = [];
     }
 
-    // --- Utilidades ---
     function closeModal() {
-        modal.style.display = 'none';
-        form.reset();
+        if (modal) modal.style.display = 'none';
+        if (form) form.reset();
+
+        // Resetear imagen y estados visuales
+        if (imagePreview) {
+            imagePreview.src = '/static/restaurante/placeholder-icon.png';
+        }
+        if (imageUploadText) imageUploadText.textContent = "";
+        if (imageUploadContainer) imageUploadContainer.style.cursor = '';
+        if (imageFileInput) imageFileInput.value = '';
+
+        newImageFile = null;
     }
 
-    // --- Eventos de Cierre ---
+    // Eventos de Cierre
     if (closeBtn) closeBtn.addEventListener('click', () => { resetSelectionMode(); closeModal(); });
     if (cancelBtn) cancelBtn.addEventListener('click', () => { resetSelectionMode(); closeModal(); });
     window.addEventListener('click', (e) => {
@@ -293,48 +301,109 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // --- 8. Eventos de Modificar/Eliminar (Context Menus) ---
-    menuGrid.addEventListener('click', function(e) {
-        if (isSelectionMode) return;
-        const card = e.target.closest('.card');
-        if (!card) return;
+    if (menuGrid) {
+        menuGrid.addEventListener('click', function(e) {
+            if (isSelectionMode) return;
 
-        // ACCIÓN: ELIMINAR
-        if (e.target.classList.contains('borrar-btn')) {
-            if (confirm('¿Eliminar esta promoción?')) {
-                card.remove();
-                alert('La promoción se ha eliminado');
+            const card = e.target.closest('.card');
+            if (!card || card.classList.contains('add-card') || card.classList.contains('dish-card')) return;
+
+            // ACCIÓN: ELIMINAR
+            if (e.target.classList.contains('borrar-btn')) {
+                if (confirm('¿Eliminar esta promoción?')) {
+                    const promoId = card.getAttribute('data-promo-id');
+
+                    fetch('/restaurante/promociones/eliminar/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({ promo_id: promoId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            card.remove();
+                            alert(data.message);
+                            location.reload();
+                        } else {
+                            alert('Error: ' + data.error);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error de red:', error);
+                        alert('Hubo un error de conexión al intentar eliminar.');
+                    });
+                }
             }
-        }
 
-        // ACCIÓN: MODIFICAR (NUEVO)
-        if (e.target.classList.contains('modificar-btn')) {
-            isEditMode = true;
-            editingCard = card; // Guardamos la referencia de la tarjeta que vamos a mutar
+            // ACCIÓN: MODIFICAR
+            if (e.target.classList.contains('modificar-btn')) {
+                isEditMode = true;
+                editingCard = card;
+                newImageFile = null;
 
-            // Extraer los datos actuales de la tarjeta creada
-            const promoText = card.querySelector('p').textContent.trim(); // Ej: "COMBO: 2x1" o "DESCUENTO: 15%"
-            const [tipoActual, valorActual] = promoText.split(': ');
+                const promoId = card.getAttribute('data-promo-id');
+                editingCard.setAttribute('data-current-promo-id', promoId);
 
-            // Rellenar el ID del platillo en el formulario
-            if (selectedDishInput) selectedDishInput.value = card.getAttribute('data-dish-id');
+                // 1. Cargar imagen actual (SOLO LECTURA)
+                const currentImgElement = card.querySelector('img');
+                if (currentImgElement && imagePreview) {
+                    imagePreview.src = currentImgElement.src;
+                    // Forzar estilos en línea si el CSS no está surtiendo efecto
+                    imagePreview.style.width = '100%';
+                    imagePreview.style.height = '100%';
+                    imagePreview.style.objectFit = 'cover'; // O 'contain' si prefieres verla completa sin recortes
+                    imagePreview.style.objectPosition = 'center';
+                }
 
-            // Ajustar el formulario según el tipo actual de promoción
-            if (tipoActual.toLowerCase() === 'combo') {
-                tipoSelect.value = 'combo';
-                togglePromotionFields('combo');
-                comboValueSelect.value = valorActual;
-            } else {
-                tipoSelect.value = 'descuento';
-                togglePromotionFields('descuento');
-                // Limpiar el símbolo '%' para dejar sólo el número en el input
-                discountValueInput.value = valorActual.replace('%', '');
+                // 2. Bloquear interacción visual
+                if (imageUploadText) {
+                    imageUploadText.textContent = "";
+                }
+                if (imageUploadContainer) {
+                    imageUploadContainer.style.cursor = 'default'; // Cursor normal (no mano)
+                }
+                if (imageFileInput) imageFileInput.value = '';
+
+                // 3. Rellenar campos
+                const promoText = card.querySelector('p').textContent.trim();
+                const partes = promoText.split(': ');
+                const tipoActual = partes[0] ? partes[0].trim() : 'combo';
+                const valorActual = partes[1] ? partes[1].trim() : '';
+
+                if (selectedDishInput) selectedDishInput.value = card.getAttribute('data-dish-id');
+
+                if (tipoActual.toLowerCase() === 'combo') {
+                    tipoSelect.value = 'combo';
+                    togglePromotionFields('combo');
+                    comboValueSelect.value = valorActual;
+                } else {
+                    tipoSelect.value = 'descuento';
+                    togglePromotionFields('descuento');
+                    discountValueInput.value = valorActual.replace('%', '');
+                }
+
+                saveBtn.textContent = 'Aplicar';
+                modal.style.display = 'flex';
             }
-
-            // Cambiar dinámicamente el texto del botón del modal
-            saveBtn.textContent = 'Aplicar';
-
-            // Mostrar el modal en pantalla
-            modal.style.display = 'flex';
-        }
-    });
+        });
+    }
 });
+
+// --- FUNCIÓN COOKIE ---
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

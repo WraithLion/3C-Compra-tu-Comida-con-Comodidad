@@ -1,3 +1,5 @@
+import os
+import uuid
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
@@ -35,13 +37,28 @@ class Repartidor(models.Model):
     def __str__(self):
         return self.IDcuenta
                                                 
+# Asignar un id a las imagenes de los platillos
+#
+
+def obtener_nombre_unico(instance, filename):
+    """
+    Genera un nombre de archivo único usando UUID.
+    Mantiene la extensión original del archivo.
+    """
+    # Extraer la extensión del archivo original
+    ext = os.path.splitext(filename)
+    # Generar un UUID único
+    nuevo_nombre = f"{uuid.uuid4().hex}{ext}"
+    # Retornar la ruta completa dentro de la carpeta 'platillos/'
+    return os.path.join('platillos', nuevo_nombre)
+
                                                                         
 class Platillo(models.Model):
     IDelemento = models.CharField(max_length=100,null=False)
     restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, related_name='platillos', null=False, default=1)
     nombre = models.CharField(max_length=100,null=False)
-    imagen = models.ImageField(upload_to='platillos/', null=False, blank=True)
-    precio = models.DecimalField(max_digits=3, decimal_places=2)
+    imagen = models.ImageField(upload_to=obtener_nombre_unico, null=True, blank=True)
+    precio = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
         return self.nombre
@@ -133,6 +150,7 @@ class Usuario(models.Model):
     def __str__(self):
         return self.nombre
         
+
 
 
 

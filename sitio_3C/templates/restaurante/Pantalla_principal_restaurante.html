@@ -1,28 +1,25 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Menú del Restaurante</title>
-  <link rel="stylesheet" href="/static/css/restaurante/styles.css" />
+  <link rel="stylesheet" href="{% static 'css/restaurante/styles.css' %}" />
 </head>
 <body>
   <header class="main-header">
-        <div class="brand">3C</div>
-        <nav class="nav-menu">
-            <a href="/restaurante/promociones" class="nav-link">Promociones</a>
-            <!-- Cambiado a un botón para manejar el clic -->
-        <button id="btn-perfil" class="nav-link active" style="cursor: pointer;">
-            Restaurante
-        </button>
-
-        <!-- Menú oculto por defecto -->
-        <div id="menu-opciones" class="context-menu" style="display: none;">
-            <div class="menu-option cerrarSesion-boton">Cerrar Sesión</div>
-        </div>
+    <div class="brand">3C</div>
+    <nav class="nav-menu">
+      <a href="{% url 'promocionesRestaurante' %}" class="nav-link">Promociones</a>
+      <button id="btn-perfil" class="nav-link active" style="cursor: pointer;">
+        Restaurante
+      </button>
+      <div id="menu-opciones" class="context-menu" style="display: none;">
+        <div class="menu-option cerrarSesion-boton">Cerrar Sesión</div>
+      </div>
     </nav>
-        </nav>
-    </header>
+  </header>
 
   <main>
     <div class="menu-grid" id="menu-grid">
@@ -32,69 +29,75 @@
         <h3>Agregar Platillo</h3>
       </div>
 
-      <!-- Tarjetas de Platillos (ejemplo) -->
-      <div class="card">
-        <img src="platillo1.jpg" alt="Platillo 1">
-        <h3>Enchiladas</h3>
-        <p>Deliciosas enchiladas rojas con pollo.</p>
-        <div class="price">$120</div>
-        <div class="context-menu">
-          <div class="menu-option modificar-btn">Modificar</div>
-          <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-      </div>
 
-      <div class="card">
-        <img src="platillo2.jpg" alt="Platillo 2">
-        <h3>Tacos al Pastor</h3>
-        <p>Tacos de piña y carne asada.</p>
-        <div class="price">$80</div>
+      <!--
+        Esto requiere que la vista 'sitioPrincipalRestaurante' pase un contexto con los platillos.
+      -->
+      {% for platillo in platillos %}
+      <div class="card" data-id="{{ platillo.IDelemento }}">
+        <!-- Si no hay imagen, usa el placeholder -->
+        <img src="{% if platillo.imagen %}{{ platillo.imagen.url }}{% else %}{% static 'restaurante/placeholder-icon.png' %}{% endif %}"
+       alt="{{ platillo.nombre }}"
+       onerror="this.onerror=null; this.src='{% static 'restaurante/placeholder-icon.png' %}';">
+        <h3>{{ platillo.nombre }}</h3>
+        <p>{{ platillo.descripcion|default:'' }}</p>
+        <div class="price">${{ platillo.precio|floatformat:2 }}</div>
         <div class="context-menu">
           <div class="menu-option modificar-btn">Modificar</div>
           <div class="menu-option borrar-btn">Eliminar</div>
         </div>
       </div>
-
-      <div class="card">
-        <img src="platillo3.jpg" alt="Platillo 3">
-        <h3>Pozole</h3>
-        <p>Tradicional pozole rojo.</p>
-        <div class="price">$110</div>
-        <div class="context-menu">
-          <div class="menu-option modificar-btn">Modificar</div>
-          <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-      </div>
+      {% empty %}
+      <!-- Mensaje si no hay platillos -->
+      <p style="grid-column: 1/-1; text-align: center; padding: 20px;">
+        No tienes platillos en tu menú. ¡Agrega el primero!
+      </p>
+      {% endfor %}
     </div>
   </main>
 
-<!-- Modal para Agregar Platillo -->
-<div id="addItemModal" class="modal">
-  <div class="modal-content">
-  <span class="close">&times;</span>
-    <div class="image-placeholder" id="imageUpload">
-      <img src="placeholder-icon.png" alt="Subir imagen">
-      <p>Subir imagen</p>
+  <!-- Modal para Agregar Platillo -->
+  <div id="addItemModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+
+      <!-- COLUMNA IZQUIERDA: IMAGEN -->
+      <div class="image-column">
+        <div class="image-placeholder" id="imageUpload">
+          <img src="{% static 'restaurante/placeholder-icon.png' %}" alt="Subir imagen" id="preview-img">
+          <p>Subir imagen</p>
+          <input type="file" id="imagenInput" name="imagen" accept="image/*" style="display: none;">
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: FORMULARIO -->
+      <div class="form-column">
+        <form id="addItemForm" class="form-fields" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="precio">Precio</label>
+            <input type="number" id="precio" name="precio" required step="0.01" min="0">
+          </div>
+
+          <!-- Espacio flexible para empujar los botones al fondo si se desea -->
+          <div style="flex-grow: 1;"></div>
+
+          <div class="modal-buttons">
+            <button type="submit" class="btn-guardar">Guardar</button>
+            <button type="button" class="btn-cancelar">Cancelar</button>
+          </div>
+        </form>
+      </div>
+
     </div>
-    <form id="addItemForm" class="form-fields">
-      <div class="form-group">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" name="nombre" required>
-      </div>
-      <div class="form-group">
-        <label for="precio">Precio</label>
-        <input type="number" id="precio" name="precio" required step="0.01">
-      </div>
-      <div class="modal-buttons">
-        <button type="submit" class="btn-guardar">Agregar</button>
-        <button type="button" class="btn-cancelar">Cancelar</button>
-      </div>
-    </form>
   </div>
-</div>
 
 
-  <script src="/static/js/restaurante/agregarElemento.js"></script>
-  <script src="/static/js/restaurante/opcionesPerfil.js"></script>
+  <script src="{% static 'js/restaurante/opcionesPerfil.js' %}"></script>
+  <!-- IMPORTANTE: ?v=2 fuerza al navegador a descargar la nueva versión -->
+  <script src="{% static 'js/restaurante/agregarElemento.js' %}?v=2"></script>
 </body>
 </html>

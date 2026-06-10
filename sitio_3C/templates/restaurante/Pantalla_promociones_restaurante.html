@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -23,53 +24,58 @@
   <main>
     <div class="menu-grid" id="menu-grid">
 
-      <!-- Tarjeta para Agregar Elemento (MODIFICADA) -->
       <div class="card add-card" id="openModal">
-        <!-- Estado 1: Botón (Visible por defecto) -->
         <div class="add-button">+</div>
         <h3>Nueva Promoción</h3>
-
-        <!-- Estado 2: Instrucción (Oculto por defecto, se muestra con JS) -->
         <div class="selection-instruction" style="display: none;">
           <p>Elige el elemento para la promoción</p>
         </div>
       </div>
 
-      <!-- Tarjetas de Platillos (Ejemplos) -->
-      <!-- Nota: Estos elementos se reutilizarán visualmente como opciones de selección -->
-      <div class="card dish-card" data-dish-id="1">
-        <img src="platillo1.jpg" alt="Platillo 1">
-        <h3>Enchiladas</h3>
-        <p class="dish-desc">Deliciosas enchiladas rojas con pollo.</p>
-        <div class="price">$120</div>
-        <!-- Este menú contextual se ocultará al seleccionar un platillo para promoción -->
-        <div class="context-menu">
-          <div class="menu-option modificar-btn">Modificar</div>
-          <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-      </div>
+        {% for promo in promociones_existentes %}
+          <div class="card promo-card" data-promo-id="{{ promo.id }}" data-dish-id="{{ promo.platillo.IDelemento }}" data-price="${{ promo.platillo.precio }}">
+            <img src="{{ promo.platillo.imagen.url }}" alt="{{ promo.platillo.nombre }}">
+            <h3>{{ promo.platillo.nombre }}</h3>
 
-      <div class="card dish-card" data-dish-id="2">
-        <img src="platillo2.jpg" alt="Platillo 2">
-        <h3>Tacos al Pastor</h3>
-        <p class="dish-desc">Tacos de piña y carne asada.</p>
-        <div class="price">$80</div>
-        <div class="context-menu">
-          <div class="menu-option modificar-btn">Modificar</div>
-          <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-      </div>
+            <p style="color: #007bff; font-weight: bold; padding: 0 15px; text-align: center; margin-bottom: 5px;">
+              {{ promo.tipo|upper }}: {{ promo.valor }}
+            </p>
 
-      <div class="card dish-card" data-dish-id="3">
-        <img src="platillo3.jpg" alt="Platillo 3">
-        <h3>Pozole</h3>
-        <p class="dish-desc">Tradicional pozole rojo.</p>
-        <div class="price">$110</div>
-        <div class="context-menu">
-          <div class="menu-option modificar-btn">Modificar</div>
-          <div class="menu-option borrar-btn">Eliminar</div>
-        </div>
-      </div>
+            <div class="price-container" style="text-align: center; padding: 5px 0;">
+              {% if promo.tipo == 'descuento' %}
+                <div class="original-price" style="text-decoration: line-through; color: #888; font-size: 15px;">
+                  ${{ promo.platillo.precio }}
+                </div>
+                <div class="discounted-price" style="font-weight: bold; font-size: 20px; color: #28a745; margin-top: 2px;">
+                  ${{ promo.precio_descuento }}
+                </div>
+              {% else %}
+                <div class="price" style="font-weight: bold; font-size: 18px; color: #4a90e2;">
+                  ${{ promo.platillo.precio }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="context-menu">
+              <div class="menu-option modificar-btn">Modificar</div>
+              <div class="menu-option borrar-btn">Eliminar</div>
+            </div>
+
+  </div> {% endfor %}
+
+
+{% for platillo in platillos_disponibles %}
+    <div class="card dish-card" data-dish-id="{{ platillo.id }}">
+      {% if platillo.imagen %}
+        <img src="{{ platillo.imagen.url }}" alt="{{ platillo.nombre }}">
+      {% else %}
+        <img src="/static/restaurante/placeholder-icon.png" alt="Sin imagen">
+      {% endif %}
+      <h3>{{ platillo.nombre }}</h3>
+      <div class="price">${{ platillo.precio }}</div>
+    </div>
+  {% endfor %}
+
     </div>
   </main>
 
@@ -78,10 +84,14 @@
   <div class="modal-content">
     <span class="close">&times;</span>
 
-    <!-- Placeholder de imagen para la promoción -->
+    <!-- Placeholder/Preview de imagen -->
     <div class="image-placeholder" id="imageUpload">
-      <img src="placeholder-icon.png" alt="Subir imagen">
-      <p>Subir imagen</p>
+      <!-- Agregamos id a la imagen para manipularla -->
+      <img id="promo-image-preview" src="{% static 'restaurante/placeholder-icon.png' %}" alt="Imagen promoción">
+      <p id="image-upload-text">Subir imagen</p>
+
+      <!-- Input file oculto para seleccionar nueva imagen -->
+      <input type="file" id="image-file-input" accept="image/*" style="display: none;">
     </div>
 
     <form id="addItemForm" class="form-fields">
