@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Menú del Restaurante</title>
+  <link rel="stylesheet" href="/static/css/restaurante/promociones.css" />
+</head>
+<body>
+  <header class="main-header">
+    <div class="brand">3C</div>
+    <nav class="nav-menu">
+      <a href="/restaurante/" class="nav-link">Platillos</a>
+      <button id="btn-perfil" class="nav-link active" style="cursor: pointer;">
+        Restaurante
+      </button>
+      <div id="menu-opciones" class="context-menu" style="display: none;">
+        <div class="menu-option cerrarSesion-boton">Cerrar Sesión</div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="menu-grid" id="menu-grid">
+
+      <div class="card add-card" id="openModal">
+        <div class="add-button">+</div>
+        <h3>Nueva Promoción</h3>
+        <div class="selection-instruction" style="display: none;">
+          <p>Elige el elemento para la promoción</p>
+        </div>
+      </div>
+
+        {% for promo in promociones_existentes %}
+          <div class="card promo-card" data-promo-id="{{ promo.id }}" data-dish-id="{{ promo.platillo.IDelemento }}" data-price="${{ promo.platillo.precio }}">
+            <img src="{{ promo.platillo.imagen.url }}" alt="{{ promo.platillo.nombre }}">
+            <h3>{{ promo.platillo.nombre }}</h3>
+
+            <p style="color: #007bff; font-weight: bold; padding: 0 15px; text-align: center; margin-bottom: 5px;">
+              {{ promo.tipo|upper }}: {{ promo.valor }}
+            </p>
+
+            <div class="price-container" style="text-align: center; padding: 5px 0;">
+              {% if promo.tipo == 'descuento' %}
+                <div class="original-price" style="text-decoration: line-through; color: #888; font-size: 15px;">
+                  ${{ promo.platillo.precio }}
+                </div>
+                <div class="discounted-price" style="font-weight: bold; font-size: 20px; color: #28a745; margin-top: 2px;">
+                  ${{ promo.precio_descuento }}
+                </div>
+              {% else %}
+                <div class="price" style="font-weight: bold; font-size: 18px; color: #4a90e2;">
+                  ${{ promo.platillo.precio }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="context-menu">
+              <div class="menu-option modificar-btn">Modificar</div>
+              <div class="menu-option borrar-btn">Eliminar</div>
+            </div>
+
+  </div> {% endfor %}
+
+
+{% for platillo in platillos_disponibles %}
+    <div class="card dish-card" data-dish-id="{{ platillo.id }}">
+      {% if platillo.imagen %}
+        <img src="{{ platillo.imagen.url }}" alt="{{ platillo.nombre }}">
+      {% else %}
+        <img src="/static/restaurante/placeholder-icon.png" alt="Sin imagen">
+      {% endif %}
+      <h3>{{ platillo.nombre }}</h3>
+      <div class="price">${{ platillo.precio }}</div>
+    </div>
+  {% endfor %}
+
+    </div>
+  </main>
+
+<!-- Modal para Agregar Promoción -->
+<div id="addItemModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <!-- Placeholder/Preview de imagen -->
+    <div class="image-placeholder" id="imageUpload">
+      <!-- Agregamos id a la imagen para manipularla -->
+      <img id="promo-image-preview" src="{% static 'restaurante/placeholder-icon.png' %}" alt="Imagen promoción">
+      <p id="image-upload-text">Subir imagen</p>
+
+      <!-- Input file oculto para seleccionar nueva imagen -->
+      <input type="file" id="image-file-input" accept="image/*" style="display: none;">
+    </div>
+
+    <form id="addItemForm" class="form-fields">
+      <!-- Campo oculto para guardar el ID del platillo seleccionado -->
+      <input type="hidden" id="selected-dish-id" name="selected-dish-id" required>
+
+      <div class="form-group">
+        <label for="tipo-Promocion">Tipo</label>
+        <select id="tipo-Promocion" name="tipo-Promocion" required>
+          <option value="combo">Combo</option>
+          <option value="descuento">Descuento</option>
+        </select>
+      </div>
+
+      <!-- Contenedor dinámico para los valores del combo -->
+      <div class="form-group combo-options" id="combo-fields">
+        <label for="combo-value">Valor del Combo</label>
+        <select id="combo-value" name="combo-value">
+          <option value="2x1">2 por 1</option>
+          <option value="3x2">3 por 2</option>
+        </select>
+      </div>
+
+      <!-- Contenedor dinámico para el valor del descuento -->
+      <div class="form-group discount-options" id="discount-fields" style="display: none;">
+        <label for="discount-value">Porcentaje de Descuento (%)</label>
+        <input type="number" id="discount-value" name="discount-value" min="1" max="100" placeholder="Ej: 20">
+      </div>
+
+      <div class="modal-buttons">
+        <button type="submit" class="btn-guardar">Crear</button>
+        <button type="button" class="btn-cancelar">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <script src="/static/js/restaurante/promociones.js"></script>
+  <script src="/static/js/restaurante/opcionesPerfil.js"></script>
+</body>
+</html>

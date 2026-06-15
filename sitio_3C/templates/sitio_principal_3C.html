@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bienvenido a 3C</title>
+  <link rel="stylesheet" href="static/css/styles.css" />
+
+</head>
+<body>
+
+  {% if messages %}
+    {% for message in messages %}
+        <script>
+            alert("{{ message|escapejs }}");
+        </script>
+    {% endfor %}
+  {% endif %}
+
+  <header class="main-header">
+        <div class="brand">3C</div>
+        <nav class="nav-menu">
+            <a href="/crearCuenta/tipo" class="nav-link">Crear cuenta</a>
+            <a id="iniciarSesionIH"  class="nav-link">Iniciar sesión</a>
+        </nav>
+    </header>
+
+<!-- Modal -->
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm" method="post">
+      {% csrf_token %}
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" name="nombre" required>
+      <label for="contrasena">Contraseña</label>
+      <input type="password" id="contrasena" name="contrasena" required>
+      <div class="modal-buttons">
+        <button id="cancelar" type="button" class="btn-cancelar">Cancelar</button>
+        <button type="button" class="btn-ingresar" onclick="window.location.href='/restaurante'">Ingresar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Mensaje de error -->
+{% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
+
+  <main class="welcome-section">
+    <h1>Bienvenido a 3C</h1>
+    <p>Conectamos clientes, restaurantes y repartidores.</p>
+
+    <div class="role-cards">
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Cliente</h2>
+        <p>Descubre y pide a tu restaurante favorito.</p>
+      </div>
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Restaurante</h2>
+        <p>Amplía tu alcance y recibe pedidos en línea.</p>
+      </div>
+      <div class="card">
+        <div class="placeholder-image"></div>
+        <h2>Repartidor</h2>
+        <p>Amplía tu alcance y recibe pedidos en línea.</p>
+      </div>
+      <div class>
+      <script src="static/js/iniciarSesion.js"></script>
+      </body>
+
+</html>

@@ -1,0 +1,424 @@
+/* =========================================
+ R *ESET Y ESTILOS GENERALES
+ ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* =========================================
+ H *EADER Y NAVEGACIÓN
+ ========================================= */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #007bff;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#menu-opciones {
+position: absolute;
+right: 2rem;
+top: 100%;
+background-color: white;
+border: 1px solid #ddd;
+box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+border-radius: 4px;
+z-index: 1001;
+min-width: 150px;
+display: none;
+}
+
+/* =========================================
+ C *ONTENIDO PRINCIPAL Y GRID
+ ========================================= */
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 100px;
+}
+
+/* =========================================
+ T *ARJETAS (CARDS)
+ ========================================= */
+.card {
+    position: relative;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain;
+}
+
+.card h3 {
+    padding: 15px 15px 5px;
+    font-size: 18px;
+    color: #333;
+}
+
+.card p {
+    padding: 0 15px;
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+    flex-grow: 1;
+}
+
+.price {
+    padding: 10px 15px 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+.add-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    background-color: #fafafa;
+    cursor: pointer;
+    min-height: 300px;
+}
+
+.add-card:hover {
+    border-color: #4a90e2;
+    background-color: #f0f7ff;
+}
+
+.add-card .add-button {
+    width: 60px;
+    height: 60px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    transition: transform 0.2s;
+}
+
+.add-card:hover .add-button {
+    transform: scale(1.1);
+}
+
+.add-card h3 {
+    color: #666;
+    font-size: 16px;
+    padding: 0;
+}
+
+.card .context-menu {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    width: 120px;
+    z-index: 10;
+    padding: 5px 0;
+}
+
+.card:hover .context-menu {
+    display: block;
+}
+
+.card .menu-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background 0.2s;
+}
+
+.card .menu-option:hover {
+    background-color: #f4f4f4;
+}
+
+/* =========================================
+ M *ODAL (DISEÑO DE DOS COLUMNAS - IGUAL QUE LA IMAGEN)
+ ========================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+/* Contenedor Principal: Grid de 2 Columnas */
+.modal-content {
+    position: relative;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Botón Cerrar */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 30px;
+    height: 30px;
+    background: #e0e0e0;
+    color: #333;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.close:hover {
+    background: #d0d0d0;
+}
+
+/* --- COLUMNA IZQUIERDA: IMAGEN --- */
+.image-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.image-placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Mantiene la imagen cuadrada */
+    max-height: 350px;
+    border: 4px #ccc;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.image-placeholder:hover {
+    border-color: #4a90e2;
+    background-color: #f0f7ff;
+}
+
+.image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s;
+}
+
+/* Texto "Subir imagen" (Oculto por defecto) */
+.image-placeholder p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6); /* Fondo oscuro para legibilidad */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    opacity: 0; /* Invisible */
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-align: center;
+    padding: 10px;
+    z-index: 2;
+}
+
+/* Mostrar texto al hacer Hover */
+.image-placeholder:hover p {
+    opacity: 1;
+}
+
+.image-placeholder:hover img {
+    transform: scale(1.05);
+}
+
+/* --- COLUMNA DERECHA: FORMULARIO --- */
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espacio entre campos */
+    flex-grow: 1;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+/* Estilos para Inputs y Selects */
+.form-group input,
+.form-group select {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fff;
+    width: 100%;
+    font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+/* Botones de Acción */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.btn-guardar, .btn-cancelar {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-guardar {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.btn-guardar:hover {
+    background-color: #357abd;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(74, 144, 226, 0.2);
+}
+
+.btn-cancelar {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-cancelar:hover {
+    background-color: #d0d0d0;
+}
+
+.btn-guardar:active, .btn-cancelar:active {
+    transform: scale(0.98);
+}
+
+

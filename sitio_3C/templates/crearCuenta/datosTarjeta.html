@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario de tarjeta</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+
+        <!-- Mensaje de error -->
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Ingrese una cuenta bancaria para manejar depósitos</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label for="num">Número de tarjeta:</label><br>
+            <input type="number" id="num" name="num"><br>
+            
+            <label for="tit">Titular de cuenta:</label><br>
+            <input type="text" id="tit" name="tit"><br>
+
+            <label for="mmaa">Fecha de vencimiento (Formato MM/AA):</label><br>
+            <input type="number" id="mmaa" name="mmaa"><br>
+
+            <label for="cc">CCV:</label><br>
+            <input type="text" id="cc" name="cc"><br>
+
+            <button type="submit"> Confirmar </button>
+        </form><br>
+
+        <button onclick="history.back()"> Cancelar </button>
+
+    </main>
+
+</body>

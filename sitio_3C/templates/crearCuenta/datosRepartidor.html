@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear cuenta de repartidor</title>
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
+
+<body>
+
+        <!-- Mensaje de error -->
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
+    <main class="welcome-section">
+        <h1>Ingrese sus datos personales</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="nom">Nombre completo:</label><br>
+            <input type="text" id="nom" name="nom"><br>
+            
+            <label for="cur">CURP:</label><br>
+            <input type="text" id="cur" name="cur"><br>
+            
+            <label for="us">Nombre de usuario:</label><br>
+            <input type="text" id="us" name="us"><br>
+            
+            <label for="cor">Correo electrónico:</label><br>
+            <input type="email" id="cor" name="cor"><br>
+            
+            <label for="tel">Número telefónico:</label><br>
+            <input type="tel" id="tel" name="tel"><br>
+            
+            <label for="con">Contraseña:</label><br>
+            <input type="text" id="con" name="con"><br>
+
+            <button type="submit"> Confirmar </button>
+        </form><br>
+        <button onclick="history.back()"> Cancelar </button>
+
+    </main>
+
+</body>

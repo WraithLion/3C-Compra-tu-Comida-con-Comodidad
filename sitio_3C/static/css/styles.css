@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #007bff; /* Color azul para "3C" */
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1rem;
+    cursor:pointer;
+}
+
+.nav-link {
+    color: #007bff;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #007bff;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.nav-link.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Sección principal */
+.welcome-section {
+  padding: 120px 40px;
+  text-align: center;
+}
+
+.welcome-section h1 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.welcome-section p {
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
+
+/* Tarjetas en fila horizontal (desktop) */
+.role-cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  flex: 1;
+  max-width: 300px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card.selected {
+  border: 2px solid #4a90e2;
+  background-color: #f0f8ff;
+}
+
+.placeholder-image {
+  width: 60px;
+  height: 60px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  margin: 0 auto 16px;
+  display: block;
+}
+
+.card h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 15px;
+  color: #777;
+}
+
+
+/* MODAL PARA INICIAR SESION Y CREAR CUENTA IH */
+
+/* Estilo del modal (fondo oscuro) */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido del modal */
+/* Estilo del modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* Botón de cerrar */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+}
+
+.close:hover {
+  color: #000;
+}
+
+/* Formulario */
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Botones del modal */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+}
+
+.btn-cancelar,
+.btn-ingresar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn-cancelar:hover {
+  background-color: #d0d0d0;
+}
+
+.btn-ingresar {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.btn-ingresar:hover {
+  background-color: #3a7bc8;
+}
